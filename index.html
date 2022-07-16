@@ -726,7 +726,8 @@ function pie( players)
 function map( players , attr)
 {
     description="This scene shows the countries with highest potential as well as the countries with highest number of potential players.\
-    The user can switch between veiwing the average potential of each country or the number of potential young talent in each country. Norway has the highest potential score of 91, with France having the highest number of potential players."
+    The user can switch between veiwing the average potential of each country or the number of potential young talent in each country. Spain has the highest number of potential players (116), \
+    with Canada having the highest potential score of 85."
     title="Young Talent by country"
     addDesc(description , title)
 
@@ -757,13 +758,6 @@ function map( players , attr)
 	//Create SVG element and append map to the SVG
 	var svg = chartSvg
 
-// //Append title of graph
-//   svg.append("text")
-//         .attr("transform", "translate("+ ((width/2)) +"," + (20) + ")")
-//         .style("text-anchor", "middle")
-//         .text("Global Wage of Players")
-//         .style("fill", "black")
-// 		.style('font' , '12px sans-serif');
 
     var data
     if(attr== 'number')
