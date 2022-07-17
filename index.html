@@ -312,7 +312,7 @@ function scatterPlot(top_player)
               .attr("y", 9)
               .attr("dy", ".35em")
               .style("text-anchor", "start")
-              .text(function(d) { return d; })
+              .text(function(d) { return (d + " foot"); })
               .style('font' , '10px sans-serif');
 
               bar(top_player, top_player[0].long_name)
@@ -449,7 +449,7 @@ function barChart(top_player)
 {
 
     title="Player Position in Top Leagues"
-    description="To further analyze the prospective leagues for young players, it is important to see the statistics of what poisitions the league offers to it's young potential players. When more substitute (SUB) positions are offered, it means that the league has low prospectives for the potential players. When more starters position are being offered, it means that the league actually assigns important positions to its potential players.\
+    description="To further analyze the prospective leagues for young players, it is important to see the statistics of what positions the league offers to it's young potential players. When more substitute (SUB) positions are offered, it means that the league has low prospectives for the potential players. When more starters position are being offered, it means that the league actually assigns important positions to its potential players.\
     The following grouped bar chart is sorted based on the number of players in each league. Only the leagues with more than 40 players are selected. Based on the visualization, \
     English League Championship is the most prospective league for young talent to advance their career. "
     
