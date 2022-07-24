@@ -1,7 +1,14 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <style>
+       .annotation-note-title{
+		      font-size: 10px
+		    }
+        .annotation-note-label{
+		      font-size: 10px
+		    }
       svg{
     background-color: white;
     border-radius: 4px;
@@ -84,6 +91,7 @@
     </style>
     <meta charset='utf-8'>
     <script src='https://d3js.org/d3.v4.min.js'></script>
+    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
   </head>
   <body>
     <div id='wrapper'>
@@ -174,10 +182,10 @@ function scatterPlot(top_player)
   data = top_player
 
   title="Young Talent Wage and Skillset"
-  description="This scene explores the atrributes of young players individually. The scatter plot shows how the current wages of young\
+  description="This scene explores the attributes of young players individually. The scatter plot shows how the current wages of young\
   players changes with their potential, and clearly as the potential of a player rises, so does his wage.\
   The color of the cirlces denote which is the preferred foot of the player, and the key is given in the legend appended.\
-   The user can further \
+   The viewer can further \
   analyze each individual player by clicking on a player's dot in the scatter plot, which will show his skillset in the bar graph, with the length of each bar denoting the code given to the respective skill denoted. Happy Exploring!"
   addDesc(description , title)
 
@@ -245,7 +253,7 @@ function scatterPlot(top_player)
           .style('font' , '14px sans-serif')
           .style("fill", "black");
   
-          // A function that change this tooltip when the user hover a point.
+          // A function that change this tooltip when the viewer hover a point.
           // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
           var mouseover = function(d) {
               tooltip
@@ -316,6 +324,32 @@ function scatterPlot(top_player)
               .style('font' , '10px sans-serif');
 
               bar(top_player, top_player[0].long_name)
+
+              //annotations
+              const annotations = [
+                {
+                  note: {
+                    label: "Player with a Potential of 95 has the highest Wage of 230,000 Euros"
+                  },
+                  type: d3.annotationCalloutCircle,
+                  subject: {
+                    radius: 20,         // circle radius
+                    radiusPadding: 0   // white space around circle befor connector
+                  },
+                  color: ["red"],
+                  x: 500,
+                  y: 0,
+                  dy: 30,
+                  dx: -50
+                }
+              ]
+
+              // Add annotation to the chart
+              const makeAnnotations = d3.annotation()
+                .annotations(annotations)
+              svg
+                .append("g")
+                .call(makeAnnotations)
 
             
 }
@@ -657,7 +691,7 @@ function pie( players)
         .attr("preserveAspectRatio", "xMinYMin meet")
         .attr("viewBox", "0 0 "+width+" "+height)
         .append("g").attr('id' , 'sum')
-        .attr("transform", "translate(" + (radius*4 + margin.right) + "," + (margin.top + radius) + ")");
+        .attr("transform", "translate(" + (radius*4 + margin.right - 30) + "," + (margin.top + radius) + ")");
 
         makePies(svg2 , category_sum, "Number of Players In each League")
         makePies(svg, category_mean , "Average Potential of each League")
@@ -712,6 +746,95 @@ function pie( players)
         .style("fill", "black")
         .style('font' , '15px sans-serif');
         }
+
+         //annotations
+         const annotations = [
+          {
+            note: {
+              label: "English Premier League",
+              title: "Highest Average Potential"
+            },
+            color: ["red"],
+            x: 10,
+            y: -150,
+            dy: 10,
+            dx: 130
+          }
+        ]
+
+        // Add annotation to the chart
+        var makeAnnotations = d3.annotation()
+          .annotations(annotations)
+        svg
+          .append("g")
+          .call(makeAnnotations)
+
+          
+        //annotations
+        annotations2 = [
+          {
+            note: {
+              label: "French Ligue 2",
+              title: "Lowest Average Potential"
+            },
+            color: ["red"],
+            x: -10,
+            y: -100,
+            dy: 10,
+            dx: 170
+          }
+        ]
+
+        // Add annotation to the chart
+        makeAnnotations2 = d3.annotation()
+          .annotations(annotations2)
+        svg
+          .append("g")
+          .call(makeAnnotations2)
+
+          annotations3 = [
+          {
+            note: {
+              label: "English Premier League",
+              title: "Most Number of Talented Young Players"
+            },
+            color: ["red"],
+            x: 30,
+            y: -100,
+            dy: 220,
+            dx: 90
+          }
+        ]
+
+        // Add annotation to the chart
+        makeAnnotations3 = d3.annotation()
+          .annotations(annotations3)
+        svg2
+          .append("g")
+          .call(makeAnnotations3)
+        
+      
+      annotations4 = [
+          {
+            note: {
+              label: "Liga de Fútbol Profesional Boliviano",
+              title: "Least Number of Talented Young Players"
+            },
+            color: ["red"],
+            x: -2,
+            y: -100,
+            dy: 220,
+            dx: -120
+          }
+        ]
+
+        // Add annotation to the chart
+        makeAnnotations4 = d3.annotation()
+          .annotations(annotations4)
+        svg2
+          .append("g")
+          .call(makeAnnotations4)
+       
         
       }
 
@@ -726,7 +849,7 @@ function pie( players)
 function map( players , attr)
 {
     description="This scene shows the countries with highest potential as well as the countries with highest number of potential players.\
-    The user can switch between veiwing the average potential of each country or the number of potential young talent in each country. Spain has the highest number of potential players (116), \
+    The viewer can switch between veiwing the average potential of each country or the number of potential young talent in each country. Spain has the highest number of potential players (116), \
     with Canada having the highest potential score of 85."
     title="Young Talent by country"
     addDesc(description , title)
@@ -734,13 +857,14 @@ function map( players , attr)
     d3.select("#map").style('opacity' , 1)
     d3.selectAll('#chart path').remove()
     d3.selectAll('#chart svg').remove()
+    d3.selectAll('#chart g').remove()
 
     pageNo=1;
 
 //   d3.selectAll(divID+" svg").remove()
   var margin = {top: 20, right: 80, bottom: 30, left: 80};
 
-
+  var annotations
   var width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 	var lowColor = '#F9EBEA'
@@ -775,6 +899,25 @@ function map( players , attr)
             value: d.value
           };
         });
+
+        annotations = [
+        {
+          note: {
+            label: "Spain has the Highest Number of Potential Soccer Players",
+          },
+          connector: {
+      end: "dot",        // Can be none, or arrow or dot
+      type: "line",      // ?? don't know what it does
+      lineType : "vertical",    // ?? don't know what it does
+      endScale: 2     // dot size
+    },
+          color: ["red"],
+          x: 570,
+          y: 250,
+          dy: -150,
+          dx: -10
+        }
+      ]
         
     }
     else if(attr == 'average')
@@ -795,6 +938,25 @@ function map( players , attr)
             value: d.value
           };
         });
+
+        annotations = [
+        {
+          note: {
+            label: "Canada has the Greatest Average Potential for Soccer Players",
+          },
+          connector: {
+      end: "dot",        // Can be none, or arrow or dot
+      type: "line",      // ?? don't know what it does
+      lineType : "vertical",    // ?? don't know what it does
+      endScale: 10     // dot size
+    },
+          color: ["red"],
+          x: 350,
+          y: 160,
+          dy: 0,
+          dx: -150
+        }
+      ]
     }
 
     data.sort(function(x, y){return d3.descending(x.value, y.value);})
@@ -934,6 +1096,12 @@ svg.selectAll("path")
 		.attr("class", "y axis")
 		.attr("transform", "translate(20,10)")
 		.call(yAxis)
+
+    const makeAnnotations = d3.annotation()
+      .annotations(annotations)
+    // d3.select("#example4")
+      svg.append("g")
+      .call(makeAnnotations)
 });
 
 }
